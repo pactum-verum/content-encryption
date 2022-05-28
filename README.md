@@ -32,7 +32,7 @@ Each user's assymetric key pair should be deterministically generated, so that:
 
 To achieve the above the key pair is generated from deterministically generated "entropy". This entropy is created as follows:
 1. The user enters his password for this purpose
-2. The user signs a message containging his password using the private key corresponding to his Ethereum-compatible address for this purpose. For this, any Ethereum wallet can be used, including hardware wallets.
+2. The user signs a message containging his password using the private key corresponding to his Ethereum-compatible address for this purpose. For this, any Ethereum wallet can be used, including hardware wallets. Note that the signing wallet has to be RFC 6979 compliant in order to repeatedly generate unique signatures.
 3. The resulting signature is hard (next to impossible) to guess since otherwise anyone could generate digital signatures.
 4. The resulting signature is hashed using SHA-256. This hash is used as "deterministic entropy".
 5. The keypair is generated using the above Deterministic Entropy (what an oxymoron :) ). 
