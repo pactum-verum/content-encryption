@@ -2,29 +2,36 @@
 import React from 'react';
 import { InputGroup, Button, FormControl, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; 
-import { ethers } from 'ethers';
+import Content from './Content';
 
 function Body({provider, address, keys}) {
     const [rootCid, setRootCid] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
     const [accessRequest, setAccessRequest] = React.useState(null);
+    const [requestAlias, setRequestAlias] = React.useState("");
 
-    const onRootCidChange = (e) => {
-        const cid = e.currentTarget.value;
-        setRootCid(cid);
-        
-        // Validate
-
-        // Load
-    }
+    const onRootCidChange = (e) => { setRootCid(e.currentTarget.value); }
 
     const onCreate = () => {
         
     }
 
-    const onRequestAccess = () => {
-        const request = "{\n  Root: \"" + rootCid + "\",\n  Addr: \"" + address + "\",\n  PubKey: \"" + keys.publicKey.buffer.toString('hex') + "\"\n}";
+    const refreshRequest = () => {
+        const request = 
+            "{\n  Root: \"" + rootCid + 
+            "\",\n  Addr: \"" + address + 
+            "\",\n  PubKey: \"" + keys.publicKey.buffer.toString('hex') + 
+            "\",\n  Alias: \"" + requestAlias + 
+            "\"\n}";
         setAccessRequest(request);
+    }
+
+    React.useEffect(() => {
+        refreshRequest();
+    }, [requestAlias]);
+
+    const onRequestAccess = () => {
+        refreshRequest();
         setShowModal(true);
     }
 
@@ -34,12 +41,15 @@ function Body({provider, address, keys}) {
         return await navigator.clipboard.writeText(accessRequest);
     }
 
+    const onAliasChange = (e) => { setRequestAlias(e.currentTarget.value); }
+
     const modal = (
         <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Access Request</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <FormControl placeholder="My alias" onChange={onAliasChange} />
                 <pre>{accessRequest}</pre>
                 <Button onClick={onCopy}>Copy to Clipboard</Button>
             </Modal.Body>
@@ -61,6 +71,8 @@ function Body({provider, address, keys}) {
             Create New
         </Button>
     </InputGroup>
+
+    <Content provider={provider} address={address} keys={keys} rootCid={rootCid}/>
     </>);
 }
 
