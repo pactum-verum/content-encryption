@@ -26,6 +26,15 @@ function Keys({provider, address, keys, setKeys}) {
     const onLogin = async () => {
         const signer = provider.getSigner();
         const signature = await signer.signMessage("Sign this to re-generate encryption keys!");
+
+        // Test wallet  RFC 6979 compliance!
+        const signatureAgain = await signer.signMessage("Sign this to re-generate encryption keys!");
+        if (signature !== signatureAgain) {
+            window.alert("Your wallet is not RFC 6979 compliant.\nIt cannot be used with this application!");
+            console.log("Non-compliant wallet.");
+            return;
+        }
+
         const seed = ethers.utils.keccak256(signature);
 
         const curve = ECDH.getCurve('secp256k1');
