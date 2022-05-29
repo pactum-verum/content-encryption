@@ -26,9 +26,7 @@ function Keys({provider, address, keys, setKeys}) {
     const onLogin = async () => {
         const signer = provider.getSigner();
         const signature = await signer.signMessage("Sign this to re-generate encryption keys!");
-console.log("Signature: ", signature);
         const seed = ethers.utils.keccak256(signature);
-console.log("Seed: ", seed, seed.toString());
 
         const curve = ECDH.getCurve('secp256k1');
         setKeys(seedToKeys(curve, seed));

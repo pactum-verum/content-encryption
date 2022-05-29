@@ -15,7 +15,7 @@ function Account({provider, setProvider, address, setAddress}) {
         window.ethereum.on('disconnect', (error) => { window.location.reload(); });
     }, []);
 
-    const onConnect = async () => {console.log("p1");
+    const onConnect = async () => {
         const providerOptions = {
             /* See Provider Options Section */
         };
