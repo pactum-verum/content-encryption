@@ -9,7 +9,7 @@ function NavigationBar({provider, setProvider, address, setAddress, ecdh, setEcd
     return (
         <Navbar className="bg-light justify-content-between">
             <Navbar.Brand>Content Encryption Sample</Navbar.Brand>
-            <Navbar.Text> <Account provider={provider} setProvider={setProvider} address={address} setAddress={setAddress}/> <Keys provider={provider} address={address} ecdh={ecdh} setEcdh={setEcdh}/> </Navbar.Text>
+            <Navbar.Text> <Account provider={provider} setProvider={setProvider} address={address} setAddress={setAddress} setEcdh={setEcdh}/> <Keys provider={provider} address={address} ecdh={ecdh} setEcdh={setEcdh}/> </Navbar.Text>
         </Navbar>
     );
 }

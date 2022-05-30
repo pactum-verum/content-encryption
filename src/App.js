@@ -29,10 +29,10 @@ console.log("window.ipfs", window.ipfs);
   }, []);
 
   return (<Card><Card.Body>
-    <NavigationBar provider={provider} setProvider={setProvider} address={address} setAddress={setAddress} ecdh={ecdh} setEcdh={setEcdh}/>
-    <br />
-    { window.web3 && typeof window.ipfs !== "undefined" && provider && address && ecdh && <Body provider={provider} address={address} ecdh={ecdh} /> }
-    </Card.Body></Card>);
+      <NavigationBar provider={provider} setProvider={setProvider} address={address} setAddress={setAddress} ecdh={ecdh} setEcdh={setEcdh}/>
+      <br />
+      { typeof window.ipfs !== "undefined" && <Body provider={provider} address={address} ecdh={ecdh} /> }
+  </Card.Body></Card>);
 }
 
 export default App;

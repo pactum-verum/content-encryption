@@ -38,13 +38,11 @@ function Body({provider, address, ecdh}) {
         setShowModal(true);
     }
 
-    const handleCloseModal = () => { setShowModal(false); }
+    const handleCloseModal = () => setShowModal(false);
 
-    const onCopy = async () => {
-        return await navigator.clipboard.writeText(accessRequest);
-    }
+    const onCopy = async () => await navigator.clipboard.writeText(accessRequest);
 
-    const onAliasChange = (e) => { setRequestAlias(e.currentTarget.value); }
+    const onAliasChange = e => setRequestAlias(e.currentTarget.value);
 
     const modal = (
         <Modal show={showModal} onHide={handleCloseModal}>
@@ -67,12 +65,12 @@ function Body({provider, address, ecdh}) {
     <InputGroup className="mb-3">
         <InputGroup.Text>Root CID</InputGroup.Text>
         <FormControl placeholder="CID" value={rootCid} onChange={onRootCidChange} />
-        { rootCid && <Button onClick={onRequestAccess}>
+        { rootCid && ecdh && <Button onClick={onRequestAccess}>
             Request Access
         </Button> }
-        <Button variant="danger" onClick={onCreate}>
+        { ecdh && <Button variant="danger" onClick={onCreate}>
             Create New
-        </Button>
+        </Button> }
     </InputGroup>
 
     <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
