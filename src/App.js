@@ -12,7 +12,7 @@ import * as IPFS from 'ipfs-http-client';
 function App() {
   const [provider, setProvider] = React.useState(null);
   const [address, setAddress] = React.useState(null);
-  const [keys, setKeys] = React.useState(null);
+  const [ecdh, setEcdh] = React.useState(null);
 
   React.useEffect(() => {
     async function getIPFS() {
@@ -29,9 +29,9 @@ console.log("window.ipfs", window.ipfs);
   }, []);
 
   return (<Card><Card.Body>
-    <NavigationBar provider={provider} setProvider={setProvider} address={address} setAddress={setAddress} keys={keys} setKeys={setKeys}/>
+    <NavigationBar provider={provider} setProvider={setProvider} address={address} setAddress={setAddress} ecdh={ecdh} setEcdh={setEcdh}/>
     <br />
-    { window.web3 && typeof window.ipfs !== "undefined" && provider && address && keys && <Body provider={provider} address={address} keys={keys} /> }
+    { window.web3 && typeof window.ipfs !== "undefined" && provider && address && ecdh && <Body provider={provider} address={address} ecdh={ecdh} /> }
     </Card.Body></Card>);
 }
 

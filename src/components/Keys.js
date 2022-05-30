@@ -2,26 +2,26 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { ethers } from "ethers";
-import seedToKeys from '../utils/seedToECDH';
+import seedToEcdh from '../utils/seedToECDH';
 import { createECDH } from 'crypto';
 
-function Keys({provider, address, keys, setKeys}) {
+function Keys({provider, address, ecdh, setEcdh}) {
     React.useEffect(() => {
     }, [provider, address]);
 
-    React.useEffect(() => {
-        if (!keys) return;
+    // React.useEffect(() => {
+    //     if (!ecdh) return;
 
-        // Test the validity of the generated key for Elliptic Curve Diffie-Hellman Key Exchange
-        const otherECDH = createECDH('secp256k1');
-        otherECDH.generateKeys();
+    //     // Test the validity of the generated key for Elliptic Curve Diffie-Hellman Key Exchange
+    //     const otherECDH = createECDH('secp256k1');
+    //     otherECDH.generateKeys();
     
-        const sec1 = keys.computeSecret(otherECDH.getPublicKey());
-        const sec2 = otherECDH.computeSecret(keys.getPublicKey());
-        const equals = sec1.equals(sec2);
-        console.log("Elliptic Curve Diffie-Hellman Key Exchange passed: ", equals);
-        window.alert("Elliptic Curve Diffie-Hellman Key Exchange passed: " + equals);
-    }, [keys]);
+    //     const sec1 = ecdh.computeSecret(otherECDH.getPublicKey());
+    //     const sec2 = otherECDH.computeSecret(ecdh.getPublicKey());
+    //     const equals = sec1.equals(sec2);
+    //     console.log("Elliptic Curve Diffie-Hellman Key Exchange passed: ", equals);
+    //     window.alert("Elliptic Curve Diffie-Hellman Key Exchange passed: " + equals);
+    // }, [ecdh]);
 
     const onRegenerate = async () => {
         const signer = provider.getSigner();
@@ -37,10 +37,10 @@ function Keys({provider, address, keys, setKeys}) {
 
         const seed = ethers.utils.keccak256(signature);
 
-        setKeys(seedToKeys(seed));
+        setEcdh(seedToEcdh(seed));
     }
 
-    if (!address || keys) return (<></>);
+    if (!address || ecdh) return (<></>);
     else return(<Button onClick={onRegenerate}>Regenerate Keys</Button>);
 }
 

@@ -5,11 +5,11 @@ import { Navbar } from 'react-bootstrap';
 import Account from './Account';
 import Keys from './Keys';
 
-function NavigationBar({provider, setProvider, address, setAddress, keys, setKeys}) {
+function NavigationBar({provider, setProvider, address, setAddress, ecdh, setEcdh}) {
     return (
         <Navbar className="bg-light justify-content-between">
             <Navbar.Brand>Content Encryption Sample</Navbar.Brand>
-            <Navbar.Text> <Account provider={provider} setProvider={setProvider} address={address} setAddress={setAddress}/> <Keys provider={provider} address={address} keys={keys} setKeys={setKeys}/> </Navbar.Text>
+            <Navbar.Text> <Account provider={provider} setProvider={setProvider} address={address} setAddress={setAddress}/> <Keys provider={provider} address={address} ecdh={ecdh} setEcdh={setEcdh}/> </Navbar.Text>
         </Navbar>
     );
 }
