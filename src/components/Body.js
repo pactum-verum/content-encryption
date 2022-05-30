@@ -4,7 +4,7 @@ import { InputGroup, Button, FormControl, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Content from './Content';
 
-function Body({provider, address, keys}) {
+function Body({provider, address, ecdh}) {
     const [rootCid, setRootCid] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
     const [accessRequest, setAccessRequest] = React.useState(null);
@@ -17,10 +17,11 @@ function Body({provider, address, keys}) {
     }
 
     const refreshRequest = () => {
+        if (!ecdh) return;
         const request = 
             "{\n  Root: \"" + rootCid + 
             "\",\n  Addr: \"" + address + 
-            "\",\n  PubKey: \"" + keys.publicKey.buffer.toString('hex') + 
+            "\",\n  PubKey: \"" + ecdh.getPublicKey().toString('hex') + 
             "\",\n  Alias: \"" + requestAlias + 
             "\"\n}";
         setAccessRequest(request);
@@ -72,7 +73,7 @@ function Body({provider, address, keys}) {
         </Button>
     </InputGroup>
 
-    <Content provider={provider} address={address} keys={keys} rootCid={rootCid}/>
+    <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
     </>);
 }
 

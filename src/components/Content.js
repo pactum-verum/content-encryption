@@ -3,7 +3,7 @@ import React from 'react';
 import { InputGroup, Button, FormControl, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; 
 
-function Content({provider, address, keys, rootCid}) {
+function Content({provider, address, ecdh, rootCid}) {
     const validate = () => { 
         return false; 
     }

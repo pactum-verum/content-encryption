@@ -2,28 +2,28 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { ethers } from "ethers";
-import ECDH from 'ecdh';
-import seedToKeys from '../utils/seedToKeys';
+import seedToEcdh from '../utils/seedToECDH';
+import { createECDH } from 'crypto';
 
-function Keys({provider, address, keys, setKeys}) {
+function Keys({provider, address, ecdh, setEcdh}) {
     React.useEffect(() => {
     }, [provider, address]);
 
-    React.useEffect(() => {
-        if (!keys) return;
+    // React.useEffect(() => {
+    //     if (!ecdh) return;
 
-        // Test the validity of the generated key for Elliptic Curve Diffie-Hellman Key Exchange
-        const curve = ECDH.getCurve('secp256k1');
-        const otherKeys = ECDH.generateKeys(curve); // throw away after the test
+    //     // Test the validity of the generated key for Elliptic Curve Diffie-Hellman Key Exchange
+    //     const otherECDH = createECDH('secp256k1');
+    //     otherECDH.generateKeys();
+    
+    //     const sec1 = ecdh.computeSecret(otherECDH.getPublicKey());
+    //     const sec2 = otherECDH.computeSecret(ecdh.getPublicKey());
+    //     const equals = sec1.equals(sec2);
+    //     console.log("Elliptic Curve Diffie-Hellman Key Exchange passed: ", equals);
+    //     window.alert("Elliptic Curve Diffie-Hellman Key Exchange passed: " + equals);
+    // }, [ecdh]);
 
-        const mySharedSecret = keys.privateKey.deriveSharedSecret(otherKeys.publicKey);
-        const otherSharedSecret = otherKeys.privateKey.deriveSharedSecret(keys.publicKey);
-        const equals = (mySharedSecret.toString('hex') === otherSharedSecret.toString('hex'));
-        console.log("Elliptic Curve Diffie-Hellman Key Exchange passed: ", equals);
-        window.alert("Elliptic Curve Diffie-Hellman Key Exchange passed: " + equals);
-    }, [keys]);
-
-    const onLogin = async () => {
+    const onRegenerate = async () => {
         const signer = provider.getSigner();
         const signature = await signer.signMessage("Sign this to re-generate encryption keys!");
 
@@ -37,12 +37,11 @@ function Keys({provider, address, keys, setKeys}) {
 
         const seed = ethers.utils.keccak256(signature);
 
-        const curve = ECDH.getCurve('secp256k1');
-        setKeys(seedToKeys(curve, seed));
+        setEcdh(seedToEcdh(seed));
     }
 
-    if (!address || keys) return (<></>);
-    else return(<Button onClick={onLogin}>Regenerate Keys</Button>);
+    if (!address || ecdh) return (<></>);
+    else return(<Button onClick={onRegenerate}>Regenerate Keys</Button>);
 }
 
 export default Keys;
