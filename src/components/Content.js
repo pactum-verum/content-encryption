@@ -15,7 +15,7 @@ function Content({provider, address, ecdh, rootCid, setRootCid}) {
             try {
                 const { value: r } = await window.ipfs.dag.get(CID.parse(rootCid));
                 setRoot(r);
-            } catch(_) { setRoot(null); }
+            } catch(e) { setRoot(null); }
         }) ();
     }, [rootCid]);
 

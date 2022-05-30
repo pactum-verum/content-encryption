@@ -23,6 +23,12 @@ function UserList({provider, address, ecdh, rootCid, setRootCid, root}) {
     }
 
     React.useEffect(() => {
+        if (!root) return;
+        let a = Object.entries(root.users).find(u => u[0] === address);
+        if (a) setMyAlias(a[1].alias);
+    }, [root]);
+
+    React.useEffect(() => {
         refreshRequest();
     }, [requestAlias]);
 
@@ -32,53 +38,58 @@ function UserList({provider, address, ecdh, rootCid, setRootCid, root}) {
         setShowModal(true);
     }
 
-    const handleCloseModal = () => setShowModal(false);
-
     const onCopy = async () => await navigator.clipboard.writeText(accessRequest);
 
-    const onAliasChange = e => setRequestAlias(e.currentTarget.value);
-
     const modal = (
-        <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Access Request</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormControl placeholder="My alias" onChange={onAliasChange} />
+                <FormControl placeholder="My alias" onChange={e => setRequestAlias(e.currentTarget.value)} />
                 <pre>{accessRequest}</pre>
                 <Button onClick={onCopy}>Copy to Clipboard</Button>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleCloseModal}>Close</Button>
+                <Button onClick={() => setShowModal(false)}>Close</Button>
             </Modal.Footer>
         </Modal>
     );
 
-console.log("Root: ", root);
-if (root) console.log(Object.entries(root.users));
+    const updateMyAlias = async () => {
+        let r = root;
+        r.users[address].alias = myAlias;
+        const cid = await window.ipfs.dag.put(r);
+
+        // No pinning planned, but this is the place to pin the rootCid
+    
+        setRootCid(cid.toString());
+    }
+
     return (<>
         {modal}
         <br/>
-        { rootCid && ecdh && 
+        { root && ecdh && !Object.keys(root.users).includes(address) &&
         <Button onClick={onRequestAccess}>Request Access</Button> }
         <br/><br/>
-        { rootCid && ecdh && 
+        { root && ecdh && Object.keys(root.users).includes(address) &&
         <InputGroup className="mb-3">
             <InputGroup.Text>Request</InputGroup.Text>
             <FormControl placeholder="paste request here" value={inputAccessRequest} onChange={e => setInputAccessRequest(e.currentTarget.value)} />
             <Button>Add user</Button>
         </InputGroup> }
         <br/><br/>
-        { rootCid && ecdh && 
+        { root && ecdh && Object.keys(root.users).includes(address) &&
         <InputGroup className="mb-3">
             <InputGroup.Text>My alias</InputGroup.Text>
             <FormControl placeholder="type alias here" value={myAlias} onChange={e => setMyAlias(e.currentTarget.value)} />
-            <Button>Update</Button>
+            <Button onClick={updateMyAlias}>Update</Button>
         </InputGroup> }
-
+        <br/>
+        Users:
         <Table striped bordered hover>
             <tbody>
-            {Object.entries(root.users).map(userEntry => <User key={userEntry[0]} userAddress={userEntry[0]} user={userEntry[1]}/>)}
+            {Object.entries(root.users).map(userEntry => <User key={userEntry[0]} userAddress={userEntry[0]} user={userEntry[1]} address={address}/>)}
             </tbody>
         </Table>
         
