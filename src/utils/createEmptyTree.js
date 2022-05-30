@@ -32,5 +32,5 @@ console.log("emptyTree: ", emptyTree)
 
     // No pinning planned, but this is the place to pin the rootCid
 
-    return cid;
+    return cid.toString();
 }

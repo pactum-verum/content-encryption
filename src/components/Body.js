@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Content from './Content';
 import createEmptyTree from '../utils/createEmptyTree';
 function Body({provider, address, ecdh}) {
-    const [rootCid, setRootCid] = React.useState(null);
+    const [rootCid, setRootCid] = React.useState("");
     const [showModal, setShowModal] = React.useState(false);
     const [accessRequest, setAccessRequest] = React.useState(null);
     const [requestAlias, setRequestAlias] = React.useState("");
@@ -13,7 +13,8 @@ function Body({provider, address, ecdh}) {
     const onRootCidChange = (e) => { setRootCid(e.currentTarget.value); }
 
     const onCreate = async () => {
-        setRootCid(createEmptyTree(address, ecdh));
+        if (!window.confirm("Are you sure?")) return;
+        setRootCid(await createEmptyTree(address, ecdh));
     }
 
     const refreshRequest = () => {
@@ -32,6 +33,7 @@ function Body({provider, address, ecdh}) {
     }, [requestAlias]);
 
     const onRequestAccess = () => {
+        setRequestAlias("");
         refreshRequest();
         setShowModal(true);
     }
@@ -64,11 +66,11 @@ function Body({provider, address, ecdh}) {
     {modal}
     <InputGroup className="mb-3">
         <InputGroup.Text>Root CID</InputGroup.Text>
-        <FormControl placeholder="CID" onChange={onRootCidChange} />
+        <FormControl placeholder="CID" value={rootCid} onChange={onRootCidChange} />
         { rootCid && <Button onClick={onRequestAccess}>
             Request Access
         </Button> }
-        <Button onClick={onCreate}>
+        <Button variant="danger" onClick={onCreate}>
             Create New
         </Button>
     </InputGroup>
