@@ -7,8 +7,6 @@ import createEmptyTree from '../utils/createEmptyTree';
 function Body({provider, address, ecdh}) {
     const [rootCid, setRootCid] = React.useState("");
 
-    const onRootCidChange = (e) => { setRootCid(e.currentTarget.value); }
-
     const onCreate = async () => {
         if (!window.confirm("Are you sure?")) return;
         setRootCid(await createEmptyTree(address, ecdh));
@@ -18,13 +16,13 @@ function Body({provider, address, ecdh}) {
     return (<>
         <InputGroup className="mb-3">
             <InputGroup.Text>Root CID</InputGroup.Text>
-            <FormControl placeholder="CID" value={rootCid} onChange={onRootCidChange} />
+            <FormControl placeholder="CID" value={rootCid} onChange={e => setRootCid(e.currentTarget.value)} />
             { ecdh && <Button variant="danger" onClick={onCreate}>
                 Create New
             </Button> }
         </InputGroup>
 
-        <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
+        <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid}/>
     </>);
 }
 

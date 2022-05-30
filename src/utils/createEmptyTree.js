@@ -19,15 +19,15 @@ const dcs = Buffer.concat([d.update(encCommonKey), d.final()]);
 console.log("DCS:", dcs.toString('hex').length, dcs.toString('hex'));
 
 console.log("peer:pubkey: ", dummyECDH.getPublicKey().toString('hex').length, dummyECDH.getPublicKey().toString('hex'));
-    let keys = {};
-    keys[address] = { 
+    let users = {};
+    users[address] = { 
         alias: "", 
         key: { peer_pubkey: dummyECDH.getPublicKey().toString('hex'), enc_common_key: encCommonKey.toString('hex') }
     }
 
     const emptyTree = { 
-        Keys: keys, 
-        Content: "empty"
+        users: users, 
+        content: "empty"
     }
 console.log("emptyTree: ", emptyTree)
 

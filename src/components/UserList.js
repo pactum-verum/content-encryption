@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
 import React from 'react';
-import { InputGroup, FormControl, Button, Modal } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.css'; 
+import { InputGroup, FormControl, Button, Modal, Table } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import User from './User';
 
-function UserList({provider, address, ecdh, rootCid}) {
+function UserList({provider, address, ecdh, rootCid, setRootCid, root}) {
     const [myAlias, setMyAlias] = React.useState("");
     const [inputAccessRequest, setInputAccessRequest] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
@@ -53,6 +54,8 @@ function UserList({provider, address, ecdh, rootCid}) {
         </Modal>
     );
 
+console.log("Root: ", root);
+if (root) console.log(Object.entries(root.users));
     return (<>
         {modal}
         <br/>
@@ -73,7 +76,12 @@ function UserList({provider, address, ecdh, rootCid}) {
             <Button>Update</Button>
         </InputGroup> }
 
-        UserList
+        <Table striped bordered hover>
+            <tbody>
+            {Object.entries(root.users).map(userEntry => <User key={userEntry[0]} userAddress={userEntry[0]} user={userEntry[1]}/>)}
+            </tbody>
+        </Table>
+        
     </>);
 }
 
