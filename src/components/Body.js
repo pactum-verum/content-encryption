@@ -17,10 +17,11 @@ function Body({provider, address, keys}) {
     }
 
     const refreshRequest = () => {
+        if (!keys) return;
         const request = 
             "{\n  Root: \"" + rootCid + 
             "\",\n  Addr: \"" + address + 
-            "\",\n  PubKey: \"" + keys.publicKey.buffer.toString('hex') + 
+            "\",\n  PubKey: \"" + keys.getPublicKey().toString('hex') + 
             "\",\n  Alias: \"" + requestAlias + 
             "\"\n}";
         setAccessRequest(request);

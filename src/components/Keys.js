@@ -2,8 +2,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { ethers } from "ethers";
-import ECDH from 'ecdh';
-import seedToKeys from '../utils/seedToKeys';
+import seedToKeys from '../utils/seedToECDH';
+import { createECDH } from 'crypto';
 
 function Keys({provider, address, keys, setKeys}) {
     React.useEffect(() => {
@@ -13,17 +13,17 @@ function Keys({provider, address, keys, setKeys}) {
         if (!keys) return;
 
         // Test the validity of the generated key for Elliptic Curve Diffie-Hellman Key Exchange
-        const curve = ECDH.getCurve('secp256k1');
-        const otherKeys = ECDH.generateKeys(curve); // throw away after the test
-
-        const mySharedSecret = keys.privateKey.deriveSharedSecret(otherKeys.publicKey);
-        const otherSharedSecret = otherKeys.privateKey.deriveSharedSecret(keys.publicKey);
-        const equals = (mySharedSecret.toString('hex') === otherSharedSecret.toString('hex'));
+        const otherECDH = createECDH('secp256k1');
+        otherECDH.generateKeys();
+    
+        const sec1 = keys.computeSecret(otherECDH.getPublicKey());
+        const sec2 = otherECDH.computeSecret(keys.getPublicKey());
+        const equals = sec1.equals(sec2);
         console.log("Elliptic Curve Diffie-Hellman Key Exchange passed: ", equals);
         window.alert("Elliptic Curve Diffie-Hellman Key Exchange passed: " + equals);
     }, [keys]);
 
-    const onLogin = async () => {
+    const onRegenerate = async () => {
         const signer = provider.getSigner();
         const signature = await signer.signMessage("Sign this to re-generate encryption keys!");
 
@@ -37,12 +37,11 @@ function Keys({provider, address, keys, setKeys}) {
 
         const seed = ethers.utils.keccak256(signature);
 
-        const curve = ECDH.getCurve('secp256k1');
-        setKeys(seedToKeys(curve, seed));
+        setKeys(seedToKeys(seed));
     }
 
     if (!address || keys) return (<></>);
-    else return(<Button onClick={onLogin}>Regenerate Keys</Button>);
+    else return(<Button onClick={onRegenerate}>Regenerate Keys</Button>);
 }
 
 export default Keys;
