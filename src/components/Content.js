@@ -6,9 +6,7 @@ import UserList from './UserList';
 import FileTree from './FileTree';
 
 function Content({provider, address, ecdh, rootCid}) {
-    const [activeTab, setActiveTab] = React.useState("list");
-
-    const onSelect = (key) => { setActiveTab(key); }
+    const [activeTab, setActiveTab] = React.useState("tree");
 
     const validate = () => { 
         return rootCid; 
@@ -16,7 +14,7 @@ function Content({provider, address, ecdh, rootCid}) {
 
     if (!validate()) return (<></>);
     else return (
-        <Tabs activeKey={activeTab} transition={false} onSelect={onSelect}>
+        <Tabs activeKey={activeTab} transition={false} onSelect={key => setActiveTab(key)}>
             <Tab eventKey="users" title="Users">
                 <UserList provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
             </Tab>
