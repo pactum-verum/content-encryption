@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 import React from 'react';
-import { InputGroup, Button, FormControl, Modal } from 'react-bootstrap';
+import { InputGroup, Button, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Content from './Content';
 import createEmptyTree from '../utils/createEmptyTree';
 function Body({provider, address, ecdh}) {
     const [rootCid, setRootCid] = React.useState("");
-    const [showModal, setShowModal] = React.useState(false);
-    const [accessRequest, setAccessRequest] = React.useState(null);
-    const [requestAlias, setRequestAlias] = React.useState("");
 
     const onRootCidChange = (e) => { setRootCid(e.currentTarget.value); }
 
@@ -17,63 +14,17 @@ function Body({provider, address, ecdh}) {
         setRootCid(await createEmptyTree(address, ecdh));
     }
 
-    const refreshRequest = () => {
-        if (!ecdh) return;
-        const request = 
-            "{\n  Root: \"" + rootCid + 
-            "\",\n  Addr: \"" + address + 
-            "\",\n  PubKey: \"" + ecdh.getPublicKey().toString('hex') + 
-            "\",\n  Alias: \"" + requestAlias + 
-            "\"\n}";
-        setAccessRequest(request);
-    }
-
-    React.useEffect(() => {
-        refreshRequest();
-    }, [requestAlias]);
-
-    const onRequestAccess = () => {
-        setRequestAlias("");
-        refreshRequest();
-        setShowModal(true);
-    }
-
-    const handleCloseModal = () => setShowModal(false);
-
-    const onCopy = async () => await navigator.clipboard.writeText(accessRequest);
-
-    const onAliasChange = e => setRequestAlias(e.currentTarget.value);
-
-    const modal = (
-        <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Access Request</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <FormControl placeholder="My alias" onChange={onAliasChange} />
-                <pre>{accessRequest}</pre>
-                <Button onClick={onCopy}>Copy to Clipboard</Button>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={handleCloseModal}>Close</Button>
-            </Modal.Footer>
-        </Modal>
-    );
 
     return (<>
-    {modal}
-    <InputGroup className="mb-3">
-        <InputGroup.Text>Root CID</InputGroup.Text>
-        <FormControl placeholder="CID" value={rootCid} onChange={onRootCidChange} />
-        { rootCid && ecdh && <Button onClick={onRequestAccess}>
-            Request Access
-        </Button> }
-        { ecdh && <Button variant="danger" onClick={onCreate}>
-            Create New
-        </Button> }
-    </InputGroup>
+        <InputGroup className="mb-3">
+            <InputGroup.Text>Root CID</InputGroup.Text>
+            <FormControl placeholder="CID" value={rootCid} onChange={onRootCidChange} />
+            { ecdh && <Button variant="danger" onClick={onCreate}>
+                Create New
+            </Button> }
+        </InputGroup>
 
-    <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
+        <Content provider={provider} address={address} ecdh={ecdh} rootCid={rootCid}/>
     </>);
 }
 
