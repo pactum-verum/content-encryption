@@ -5,6 +5,7 @@ export default async function createEmptyTree(address, ecdh) {
     const dummyECDH = crypto.createECDH('secp256k1');
     dummyECDH.generateKeys();
 
+console.log("Dummy ECG pubkey: ", dummyECDH.getPublicKey());
     const keyEncryprionKey = ecdh.computeSecret(dummyECDH.getPublicKey());
 console.log("keyEncryprionKey: ", keyEncryprionKey.toString('hex').length, keyEncryprionKey.toString('hex'));
     // Generate Common Secret for symmetric encryption of the content

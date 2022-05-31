@@ -3,23 +3,19 @@ import React from 'react';
 import { InputGroup, FormControl, Button, Modal, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import User from './User';
+import addUser from '../utils/addUser';
 
-function UserList({provider, address, ecdh, rootCid, setRootCid, root}) {
+function UserList({provider, address, ecdh, rootCid, setRootCid, root, commonKey}) {
     const [myAlias, setMyAlias] = React.useState("");
-    const [inputAccessRequest, setInputAccessRequest] = React.useState(null);
+    const [inputAccessRequest, setInputAccessRequest] = React.useState("");
     const [showModal, setShowModal] = React.useState(false);
-    const [accessRequest, setAccessRequest] = React.useState(null);
+    const [accessRequest, setAccessRequest] = React.useState("");
     const [requestAlias, setRequestAlias] = React.useState("");
 
     const refreshRequest = () => {
         if (!ecdh) return;
-        const request = 
-            "{\n  Root: \"" + rootCid + 
-            "\",\n  Addr: \"" + address + 
-            "\",\n  PubKey: \"" + ecdh.getPublicKey().toString('hex') + 
-            "\",\n  Alias: \"" + requestAlias + 
-            "\"\n}";
-        setAccessRequest(request);
+        const request = { root: rootCid, address: address, pubkey: ecdh.getPublicKey().toString('hex'), alias: requestAlias};
+        setAccessRequest(JSON.stringify(request));
     }
 
     React.useEffect(() => {
@@ -66,20 +62,33 @@ function UserList({provider, address, ecdh, rootCid, setRootCid, root}) {
         setRootCid(cid.toString());
     }
 
+    const onAddUser = async () => {
+        const request = JSON.parse(inputAccessRequest);
+        if (Object.keys(root.users).includes(request.address)) {
+            window.alert("Error: User already has access.")
+        } else if (rootCid !== request.root) {
+            window.alert("Error: Root mismatch (not requesting for this tree).")
+        } else {
+            const cid = await addUser(request, root, commonKey, ecdh);
+console.log("Added user cid: ", cid);
+            if (cid) setRootCid(cid);
+        }
+    }
+
     return (<>
         {modal}
         <br/>
-        { root && ecdh && !Object.keys(root.users).includes(address) &&
+        { root && ecdh && !Object.keys(root.users).includes(address.toLowerCase()) &&
         <Button onClick={onRequestAccess}>Request Access</Button> }
         <br/><br/>
-        { root && ecdh && Object.keys(root.users).includes(address) &&
+        { root && ecdh && Object.keys(root.users).includes(address.toLowerCase()) &&
         <InputGroup className="mb-3">
             <InputGroup.Text>Request</InputGroup.Text>
             <FormControl placeholder="paste request here" value={inputAccessRequest} onChange={e => setInputAccessRequest(e.currentTarget.value)} />
-            <Button>Add user</Button>
+            <Button onClick={onAddUser}>Add user</Button>
         </InputGroup> }
         <br/><br/>
-        { root && ecdh && Object.keys(root.users).includes(address) &&
+        { root && ecdh && Object.keys(root.users).includes(address.toLowerCase()) &&
         <InputGroup className="mb-3">
             <InputGroup.Text>My alias</InputGroup.Text>
             <FormControl placeholder="type alias here" value={myAlias} onChange={e => setMyAlias(e.currentTarget.value)} />

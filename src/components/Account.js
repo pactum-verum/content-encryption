@@ -8,7 +8,7 @@ function Account({provider, setProvider, address, setAddress, setEcdh}) {
     React.useEffect(() => {
         if (!window.ethereum) return;
         window.ethereum.on("connect", info => console.log(info) );
-        window.ethereum.on('accountsChanged', accounts => { setAddress(accounts[0]); setEcdh(null); });
+        window.ethereum.on('accountsChanged', accounts => { setAddress(accounts[0].toLowerCase()); setEcdh(null); });
         window.ethereum.on('chainChanged', chainId => window.location.reload() );
         window.ethereum.on('disconnect', error => window.location.reload() );
     }, []);
@@ -28,7 +28,7 @@ function Account({provider, setProvider, address, setAddress, setEcdh}) {
         const p = new ethers.providers.Web3Provider(instance);
         setProvider(p);
         const signer = p.getSigner();
-        setAddress(await signer.getAddress());
+        setAddress((await signer.getAddress()).toLowerCase());
     }
 
     if (address) return (<>Account: {address}</>);
