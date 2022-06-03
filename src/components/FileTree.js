@@ -11,7 +11,7 @@ function FileTree({provider, address, ecdh, rootCid, setRootCid, root, commonKey
         <br/> <br/>
         <AddFiles provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid} root={root} commonKey={commonKey}/>
         <br/> <br/>
-        { root.content.toString() !== emptyFolder && <FileSubtree provider={provider} address={address} ecdh={ecdh} subroot={root.content} subpath={"/"} commonKey={commonKey}/> }
+        { root.content.toString() !== emptyFolder && <FileSubtree provider={provider} address={address} ecdh={ecdh} subroot={root.content} path={"/"} commonKey={commonKey}/> }
     </>);
 }
 
