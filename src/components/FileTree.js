@@ -3,15 +3,15 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import AddFiles from './AddFiles';
 import FileSubtree from './FileSubtree';
+import emptyFolder from '../utils/emptyFolder';
 
 function FileTree({provider, address, ecdh, rootCid, setRootCid, root, commonKey}) {
-
     return (<>
         Content root: {root.content.toString()}
         <br/> <br/>
         <AddFiles provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid} root={root} commonKey={commonKey}/>
         <br/> <br/>
-        <FileSubtree provider={provider} address={address} ecdh={ecdh} subroot={root.content} subpath={"/"} commonKey={commonKey}/>
+        { root.content.toString() !== emptyFolder && <FileSubtree provider={provider} address={address} ecdh={ecdh} subroot={root.content} subpath={"/"} commonKey={commonKey}/> }
     </>);
 }
 
