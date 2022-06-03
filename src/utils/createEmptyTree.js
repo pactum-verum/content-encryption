@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import emptyFolder from './emptyFolder';
 
 export default async function createEmptyTree(address, ecdh) {
     // Create dummy ECDH
@@ -28,7 +29,7 @@ console.log("peer:pubkey: ", dummyECDH.getPublicKey().toString('hex').length, du
 
     const emptyTree = { 
         users: users, 
-        content: "empty"
+        content: emptyFolder
     }
 console.log("emptyTree: ", emptyTree)
 
