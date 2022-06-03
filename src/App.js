@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
-
+// SPDX-License-Identifier: Apache-2.0 and MIT
 import './App.css';
 import React from 'react';
 import { Card } from 'react-bootstrap';

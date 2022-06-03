@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0 and MIT
 import crypto from 'crypto';
 
 export default function getCommonKey(pubkey, encCommonKey, ecdh) {

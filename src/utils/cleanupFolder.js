@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0 and MIT
 import rootPath from "./rootPath";
 
 export default async function cleanupFolder() {
