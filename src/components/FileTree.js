@@ -1,15 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0 and MIT
 import React from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import emptyFolder from '../utils/emptyFolder';
-import cleanupFolder from '../utils/cleanupFolder';
-import AddFile from './AddFile';
+import AddFiles from './AddFiles';
+import FileSubtree from './FileSubtree';
 
 function FileTree({provider, address, ecdh, rootCid, setRootCid, root, commonKey}) {
 
     return (<>
-        <AddFile provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid} root={root} commonKey={commonKey}/>
+        Content root: {root.content.toString()}
+        <br/> <br/>
+        <AddFiles provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid} root={root} commonKey={commonKey}/>
+        <br/> <br/>
+        <FileSubtree provider={provider} address={address} ecdh={ecdh} subroot={root.content} subpath={"/"} commonKey={commonKey}/>
     </>);
 }
 

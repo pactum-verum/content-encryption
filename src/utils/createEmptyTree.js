@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 and MIT
 import crypto from 'crypto';
+import { CID } from 'multiformats/cid';
 import emptyFolder from './emptyFolder';
 
 export default async function createEmptyTree(address, ecdh) {
@@ -30,7 +31,7 @@ console.log("peer:pubkey: ", dummyECDH.getPublicKey().toString('hex').length, du
 
     const emptyTree = { 
         users: users, 
-        content: emptyFolder
+        content: CID.parse(emptyFolder)
     }
 console.log("emptyTree: ", emptyTree)
 

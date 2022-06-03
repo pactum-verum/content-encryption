@@ -4,11 +4,14 @@ import { InputGroup, Button, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; 
 import Content from './Content';
 import createEmptyTree from '../utils/createEmptyTree';
+import cleanupFolder from '../utils/cleanupFolder';
+
 function Body({provider, address, ecdh}) {
     const [rootCid, setRootCid] = React.useState("");
 
     const onCreate = async () => {
         if (!window.confirm("Are you sure?")) return;
+        await cleanupFolder();
         setRootCid(await createEmptyTree(address, ecdh));
     }
 
