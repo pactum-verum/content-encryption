@@ -8,15 +8,13 @@ import rootPath from '../utils/rootPath';
 
 function File({provider, address, ecdh, path, file, commonKey}) {
     const [showModal, setShowModal] = React.useState(false);
-    const [cleartext, setCleartext] = React.useState("tra la la la la\n la la la");
+    const [cleartext, setCleartext] = React.useState("");
 
     React.useEffect(() => {
         (async () => {
-            const chunks = [];
-console.log("Chunks");
+            const chunks = [];console.log("Chunks");
             for await (const chunk of window.ipfs.files.read(rootPath + path + file.name)) {
                 chunks.push(chunk);
-console.log("Chunk: ", chunk);
             }          
             setCleartext(toString(concat(chunks)));
         }) ();
@@ -28,7 +26,7 @@ console.log("Chunk: ", chunk);
                 <Modal.Title>File: {path + file.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormControl as="textarea" rows="10" readOnly="true" value={cleartext}/>
+                <FormControl as="textarea" rows={10} readOnly={true} value={cleartext}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={() => setShowModal(false)}>Close</Button>

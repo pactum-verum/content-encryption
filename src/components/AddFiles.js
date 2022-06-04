@@ -9,6 +9,10 @@ function AddFiles({provider, address, ecdh, rootCid, setRootCid, root, commonKey
     const [path, setPath] = React.useState("/");
 
     const onUpload = async (files) => {
+        if (!commonKey) {
+            window.alert("Cannot upload files.\nMissing encryption keys.");
+            return;
+        }
         if ("/" !== path[0] || "/" !== path[path.length-1]) {
             window.alert("Path must start and end with \"/\".");
             return;
