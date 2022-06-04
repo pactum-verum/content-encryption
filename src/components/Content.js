@@ -6,6 +6,7 @@ import UserList from './UserList';
 import FileTree from './FileTree';
 import { CID } from 'multiformats/cid';
 import getCommonKey from '../utils/getCommonKey';
+import { ethers } from 'ethers';
 
 function Content({provider, address, ecdh, rootCid, setRootCid}) {
     const [activeTab, setActiveTab] = React.useState("tree");
@@ -41,8 +42,8 @@ console.log("Got common key: ", k);
 
     if (!root) return (<></>);
     else return (<>
-        Common key: {commonKey}
-
+        Common key hash end: {ethers.utils.keccak256(Buffer.from(commonKey, 'hex')).toString().substring(62)}
+        <br/><br/>
         <Tabs activeKey={activeTab} transition={false} onSelect={key => setActiveTab(key)}>
             <Tab eventKey="users" title="Users">
                 <UserList provider={provider} address={address} ecdh={ecdh} rootCid={rootCid} setRootCid={setRootCid} root={root} commonKey={commonKey}/>
