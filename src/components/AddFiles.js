@@ -26,7 +26,6 @@ function AddFiles({provider, address, ecdh, rootCid, setRootCid, root, commonKey
         const r = await window.ipfs.files.stat(rootPath, { hash: true });
         root.content = r.cid;
         const cid = await window.ipfs.dag.put(root);
-console.log("New root CID: ", cid.toString());
         setRootCid(cid.toString());
         window.alert("Upload completed.")
     }

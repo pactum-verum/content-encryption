@@ -70,7 +70,6 @@ function UserList({provider, address, ecdh, rootCid, setRootCid, root, commonKey
             window.alert("Error: Root mismatch (not requesting for this tree).")
         } else {
             const cid = await addUser(request, root, commonKey, ecdh);
-console.log("Added user cid: ", cid);
             if (cid) setRootCid(cid);
         }
     }

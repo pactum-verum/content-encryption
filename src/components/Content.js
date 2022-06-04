@@ -17,11 +17,8 @@ function Content({provider, address, ecdh, rootCid, setRootCid}) {
         (async () => {
             try {
                 const { value: r } = await window.ipfs.dag.get(CID.parse(rootCid));
-console.log("********** Read root: ", r);
                 setRoot(r);
-console.log("r.users[address]: ", r.users[address]);
                 const k = getCommonKey(r.users[address].key.peer_pubkey, r.users[address].key.enc_common_key, ecdh);
-console.log("Got common key: ", k);
                 setCommonKey(k);
             } catch(e) { 
                 setCommonKey(null);
@@ -34,7 +31,6 @@ console.log("Got common key: ", k);
         (async () => {
             try {
                 const k = getCommonKey(root.users[address].key.peer_pubkey, root.users[address].key.enc_common_key, ecdh);
-console.log("Got common key: ", k);
                 setCommonKey(k);
             } catch(e) { setCommonKey(null); }
         }) ();

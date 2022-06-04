@@ -2,7 +2,6 @@
 import crypto from 'crypto';
 
 export default function encryptFileToMFS(file, path, commonKey) {
-console.log("File: ", file);
     const cipher = 'aes-256-ctr';
     const crypter = crypto.createCipher(cipher, Buffer.from(commonKey, 'hex'));
     let encfile = Buffer.from([]);
@@ -20,7 +19,6 @@ console.log("File: ", file);
             encfile = Buffer.concat([encfile, crypter.final()]);
             await window.ipfs.files.write(path + file.name, encfile, { create: true, parents: true, truncate: true })
                 .catch(error => { console.error(error); window.alert(error.toString()); } );
-console.log("Wrote file: ", file.name);
             resolve(true);
         }
         reader.readAsArrayBuffer(file);
