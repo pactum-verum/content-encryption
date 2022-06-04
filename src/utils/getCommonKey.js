@@ -16,7 +16,7 @@ console.log("keyEncryprionKey: ", keyEncryprionKey.toString('hex').length, keyEn
         // Decrypt the common Common Secret for symmetric encryption of the content
         const cipher = 'aes-256-ctr';
         const d = crypto.createDecipher(cipher, keyEncryprionKey);
-            const dcs = Buffer.concat([d.update(Buffer.from(encCommonKey, 'hex')), d.final()]);
+        const dcs = Buffer.concat([d.update(Buffer.from(encCommonKey, 'hex')), d.final()]);
 console.log("Recovered decryption Common Secret:", dcs.toString('hex').length, dcs.toString('hex'));
         return dcs.toString('hex');
     } catch(_) { return null; }   

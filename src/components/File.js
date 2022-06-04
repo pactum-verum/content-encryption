@@ -2,23 +2,24 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { FormControl, Button, Modal } from 'react-bootstrap';
-import { concat } from 'uint8arrays/concat';
 import { toString } from 'uint8arrays/to-string';
 import rootPath from '../utils/rootPath';
+import decryptBuffer from '../utils/decryptBuffer';
 
 function File({provider, address, ecdh, path, file, commonKey}) {
     const [showModal, setShowModal] = React.useState(false);
     const [cleartext, setCleartext] = React.useState("");
 
     React.useEffect(() => {
+        if (!commonKey) return;
         (async () => {
-            const chunks = [];console.log("Chunks");
+            const chunks = [];
             for await (const chunk of window.ipfs.files.read(rootPath + path + file.name)) {
                 chunks.push(chunk);
-            }          
-            setCleartext(toString(concat(chunks)));
+            }        
+            setCleartext(toString(decryptBuffer(chunks, commonKey)));
         }) ();
-    }, [file]);
+    }, [file, commonKey]);
 
     const modal = (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -26,7 +27,8 @@ function File({provider, address, ecdh, path, file, commonKey}) {
                 <Modal.Title>File: {path + file.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormControl as="textarea" rows={10} readOnly={true} value={cleartext}/>
+                { !commonKey && "Cannot decrypt!" }
+                { commonKey && <FormControl as="textarea" rows={10} readOnly={true} value={cleartext}/> }
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={() => setShowModal(false)}>Close</Button>
@@ -36,7 +38,7 @@ function File({provider, address, ecdh, path, file, commonKey}) {
 
     return (<>
         <br/>
-        <href onClick={() => setShowModal(true)} >{path + file.name}</href>
+        <Button variant="link" onClick={() => setShowModal(true)}>{path + file.name}</Button>
         {modal}
     </>);
 }

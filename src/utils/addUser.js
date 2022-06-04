@@ -11,7 +11,7 @@ console.log("CS: ", commonSecret);
 console.log("CS: ", commonSecret.length, commonSecret);
 console.log("CS: ", Buffer.from(commonSecret, 'hex').toString('hex').length, Buffer.from(commonSecret, 'hex').toString('hex'));
         const cipher = 'aes-256-ctr';
-        var crypter = crypto.createCipher(cipher, keyEncryprionKey);
+        const crypter = crypto.createCipher(cipher, keyEncryprionKey);
         let encCommonKey = Buffer.concat([crypter.update(Buffer.from(commonSecret, 'hex')), crypter.final()]);
 console.log("Enc common key: ", encCommonKey.toString('hex').length, encCommonKey.toString('hex'));
 const d = crypto.createDecipher(cipher, keyEncryprionKey);

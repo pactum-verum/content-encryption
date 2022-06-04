@@ -14,7 +14,7 @@ console.log("keyEncryprionKey: ", keyEncryprionKey.toString('hex').length, keyEn
     // Generate Common Secret for symmetric encryption of the content
     const commonSecret = crypto.randomBytes(32);
     const cipher = 'aes-256-ctr';
-    var crypter = crypto.createCipher(cipher, keyEncryprionKey);
+    const crypter = crypto.createCipher(cipher, keyEncryprionKey);
     let encCommonKey = Buffer.concat([crypter.update(commonSecret), crypter.final()]);
 console.log("CS: ", commonSecret.toString('hex').length, commonSecret.toString('hex'));
 console.log("Enc common key: ", encCommonKey.toString('hex').length, encCommonKey.toString('hex'));

@@ -4,6 +4,7 @@ import { InputGroup, FormControl, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropzone from 'react-dropzone'
 import rootPath from '../utils/rootPath';
+import encryptFileToMFS from '../utils/encryptFileToMFS';
 
 function AddFiles({provider, address, ecdh, rootCid, setRootCid, root, commonKey}) {
     const [path, setPath] = React.useState("/");
@@ -18,14 +19,14 @@ function AddFiles({provider, address, ecdh, rootCid, setRootCid, root, commonKey
             return;
         }
         await Promise.all(
-            files.map(file => {
-              return window.ipfs.files.write(rootPath + path + file.name, file, { create: true, parents: true, truncate: true })
-                .catch(error => console.error(error));
+            files.map(async file => {
+                await encryptFileToMFS(file, rootPath + path, commonKey);
             })
         );
         const r = await window.ipfs.files.stat(rootPath, { hash: true });
         root.content = r.cid;
         const cid = await window.ipfs.dag.put(root);
+console.log("New root CID: ", cid.toString());
         setRootCid(cid.toString());
         window.alert("Upload completed.")
     }

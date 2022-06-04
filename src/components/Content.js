@@ -42,7 +42,7 @@ console.log("Got common key: ", k);
 
     if (!root) return (<></>);
     else return (<>
-        Common key hash end: {ethers.utils.keccak256(Buffer.from(commonKey, 'hex')).toString().substring(62)}
+        Common key hash end: {commonKey && ethers.utils.keccak256(Buffer.from(commonKey, 'hex')).toString().substring(62)}
         <br/><br/>
         <Tabs activeKey={activeTab} transition={false} onSelect={key => setActiveTab(key)}>
             <Tab eventKey="users" title="Users">
