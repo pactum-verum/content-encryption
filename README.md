@@ -8,7 +8,7 @@ This project solves the problem of encryption of content stored in IPFS. The req
 - The folder structure should not be encrypted, but each file in it should.
 - The keys should be maintained by the ethereum compatible wallet, such as MetaMask, WalletConnect etc. In addition, hardware keys should be allowed to do this, so no keys are stored on the user's computer.
 - The content should be encrypted for multiple users. In addition, each of those users should be able to add another user.
-- Upon adding new users, computation and re-storage shhall be minimized.
+- Upon adding new users, computation and re-storage shall be minimized.
 
 This implementation is intended for web usage, and should be running inside the users' browsers, thus allowing implementation of decentralized Web3 applications.
 

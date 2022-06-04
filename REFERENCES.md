@@ -47,3 +47,7 @@ https://docs.metamask.io/guide/signing-data.html#signing-data-with-metamask
 React 18, Webpack 5 overrides/polyfills:
 
 https://www.alchemy.com/blog/how-to-polyfill-node-core-modules-in-webpack-5
+
+Files and buffers and JavaScript:
+
+https://elliott-king.github.io/2020/09/callbacks_to_async/
