@@ -16,9 +16,9 @@ This implementation is intended for web usage, and should be running inside the 
 
 All content shall be encrypted using symentric encryption in the following format:
 
-    1. header containing a collection of users denoted by Ethereum-compatible addresses. For each such user, the encrypted version of the Common Secret is stored, in a form decryptable by that user,
-    
-    2. payload in form of IPFS folder in which the files are encrypted using the common symmetric key and the encryption method specified in the first header above.
+1. header containing a collection of users denoted by Ethereum-compatible addresses. For each such user, the encrypted version of the Common Secret is stored, in a form decryptable by that user,
+
+2. payload in form of IPFS folder in which the files are encrypted using the common symmetric key and the encryption method specified in the first header above.
 
 When a new user is added, a new entry is appended to the list in the header 2 above. In it, the common symmetric key is encrypted for the new user. Since another user is doing this, asymetric encryption is used, so that the existing user can encrypt the common symmetric key for the new user using the new user's public key, and the new user can recover the common symmetric key using his private key. 
 
