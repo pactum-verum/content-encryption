@@ -18,10 +18,13 @@ function Content({provider, address, ecdh, rootCid, setRootCid}) {
             try {
                 const { value: r } = await window.ipfs.dag.get(CID.parse(rootCid));
                 setRoot(r);
-                const k = getCommonKey(r.users[address].key.peer_pubkey, r.users[address].key.enc_common_key, ecdh);
-                setCommonKey(k);
+                try {
+                    const k = getCommonKey(r.users[address].key.peer_pubkey, r.users[address].key.enc_common_key, ecdh);
+                    setCommonKey(k);
+                } catch(e) { 
+                    setCommonKey(null);
+                }
             } catch(e) { 
-                setCommonKey(null);
                 setRoot(null); 
             }
         }) ();

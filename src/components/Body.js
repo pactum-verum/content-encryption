@@ -15,7 +15,6 @@ function Body({provider, address, ecdh}) {
         setRootCid(await createEmptyTree(address, ecdh));
     }
 
-
     return (<>
         <InputGroup className="mb-3">
             <InputGroup.Text>Root CID</InputGroup.Text>
