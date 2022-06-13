@@ -1,5 +1,7 @@
 # Document and message content encryption.
 
+## Click [here](demo/README.md) for demo.
+
 ## Introduction
 
 This project solves the problem of encryption of content stored in IPFS. The requirements are the following:
